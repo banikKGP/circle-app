@@ -1,0 +1,28 @@
+version: "2"
+services:
+    web-ui:
+        image: home-automation-client:latest
+        ports:
+            - "4200:4200"
+    mongo:
+        image: mongo:latest
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: mongodb
+            MONGO_INITDB_ROOT_PASSWORD: mongodb
+        expose:
+            - "27017"
+        volumes: 
+            - ../mongo_data:/data/db
+        restart: always
+    web-api:
+        build: .
+        ports:
+            - "9000:9000"
+        volumes: 
+            - /tmp/api_logs:/logs
+        depends_on:
+            - mongo
+        env_file:
+            - ../.env
+        restart: always
+    
