@@ -82,9 +82,36 @@ const getUser = (userParams) => {
     });
 };
 
+const removeUser = (userParams) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+            const circle = await Circle.findOne({
+                _id: userParams.circleId || userParams.circle._id ,
+                ["users.userName"]: userParams.userName,
+                isDeleted: false
+            });
+            if(!circle){
+                return reject("Circle does not exist");
+            }
+            
+            exisitingUsers = circle.users.filter(user => {
+                if(user.userName != userParams.userName){
+                    return user;
+                }
+            });
+            circle.users = exisitingUsers;
+            circle.save();
+            return resolve(circle);
+        } catch(err) {
+            return reject(err);
+        }
+    });
+};
+
 module.exports = {
     createNewCircle,
     validateLogin,
     addNewUser,
-    getUser
+    getUser,
+    removeUser
 };

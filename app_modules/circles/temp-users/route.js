@@ -1,10 +1,11 @@
+const auth = require("../../../auth-module");
+const express = require("express");
+const router = express.Router();
+const controller = require("./controller");
 
-// const auth = require("../../auth-module");
-// const express = require("express");
-// const router = express.Router();
-// const controller = require("./controller");
 
+router.post("/", auth.circleAuth, controller.addUser);
+router.get("/", auth.circleAuth, controller.getUser);
+router.get("/all", auth.circleAuth, controller.getAllUser);
 
-// router.post("/add-user", auth.circleAuth, controller.addUser);
-
-// module.exports = router;
+module.exports = router;

@@ -56,11 +56,25 @@ const addNewUser = (userParams) =>{
 const getUser = (userParams) =>{
     return new Promise(async (resolve, reject) =>{
         try {
-            if(!userParams.userName) {
+            if(!userParams.circleUserId) {
                 return reject('User name is missing');
             }
             const newUser = await model.getUser(userParams);
             return resolve(newUser);
+        } catch(err) {
+            return reject(err.message || err);
+        }
+    });
+};
+
+const removeUser = (userParams) =>{
+    return new Promise(async (resolve, reject) =>{
+        try {
+            if(!userParams.userName) {
+                return reject('User name is missing');
+            }
+            const circle = await model.removeUser(userParams);
+            return resolve(circle);
         } catch(err) {
             return reject(err.message || err);
         }
@@ -72,5 +86,6 @@ module.exports = {
     login,
     createInvitationLink,
     addNewUser,
-    getUser
+    getUser,
+    removeUser
 };
